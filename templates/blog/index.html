@@ -4,16 +4,18 @@
 {% block content %}
 <h2>Blog Posts</h2>
 {% for post in posts %}
-    <div class="row">
-        <div class="col">
+    {% row %}
+        {% col %}
             <h3>{{ post.title }}</h3>
-            <small>By {{ post.author|author_details:user }} on {{ post.published_at|date:"M, d Y" }}</small>
-            <p>{{ post.summary }}</p>
+            {% include "blog/post-byline.html" %}
+            {% row 'border-bottom' %}
+                <p>{{ post.summary }}</p>
+            {% endrow %}
             <p>
                 ({{post.content|wordcount}} words)
-                <a href="#">Read More</a>
+                <a href="{% url 'blog-post-detail' post.slug %}">Read More</a>
             </p>
-        </div>
-    </div>
+        {% endcol %}
+    {% endrow %}
 {% endfor %}
 {% endblock %}
