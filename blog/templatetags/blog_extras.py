@@ -1,9 +1,11 @@
+import logging
 from django import template
 from django.contrib.auth.models import User
 from django.utils.html import format_html
 
 from blog.models import Post
 
+logger = logging.getLogger(__name__)
 register = template.Library()
 
 
@@ -50,4 +52,5 @@ def endcol():
 def recent_posts(context):
   current_post_id = context['post'].id
   posts = Post.objects.exclude(pk=current_post_id).order_by('-published_at')[:5]
+  logger.debug("Loaded %d recent posts for post %d", len(posts), current_post_id)
   return {'title': 'Recent Posts', 'posts': posts}
