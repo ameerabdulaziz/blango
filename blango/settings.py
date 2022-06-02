@@ -36,6 +36,9 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
+        # Local Apps
+        'blog',
+
         # Django's Apps
         'django.contrib.admin',
         'django.contrib.auth',
@@ -47,12 +50,11 @@ class Dev(Configuration):
         # 3rd-Party's Apps
         'crispy_forms',
         'crispy_bootstrap5',
-        
-        # Local Apps
-        'blog',
+        'debug_toolbar',
     ]
 
     MIDDLEWARE = [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
         'django.middleware.security.SecurityMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
@@ -181,6 +183,10 @@ class Dev(Configuration):
             "level": "DEBUG",
         },
     }
+
+
+    # Internal IPs
+    INTERNAL_IPS = ["192.168.10.93"]
 
 
     # Crispy Forms Setup
