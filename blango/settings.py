@@ -52,6 +52,7 @@ class Dev(Configuration):
         'crispy_forms',
         'crispy_bootstrap5',
         'debug_toolbar',
+        'django_registration',
     ]
 
     MIDDLEWARE = [
@@ -193,6 +194,10 @@ class Dev(Configuration):
     # Internal IPs
     INTERNAL_IPS = ["192.168.10.93"]
 
+
+    # Email backend
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    ACCOUNT_ACTIVATION_DAYS = 7
 
     # Crispy Forms Setup
     CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
