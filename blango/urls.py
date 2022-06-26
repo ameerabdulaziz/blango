@@ -26,7 +26,7 @@ import blog.views
 from django_registration.backends.activation.views import RegistrationView
 from blango_auth.forms import BlangoRegistrationForm
 urlpatterns = [
-    path('', blog.views.index),
+    path('', blog.views.index, name='blog-posts'),
     path('post/<slug>/', blog.views.post_detail, name='blog-post-detail'),
     path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/profile/", blango_auth.views.profile, name="profile"),
@@ -35,6 +35,8 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("ip/", blog.views.get_ip),
     path('admin/', admin.site.urls),
+
+    path("api/v1/", include("blog.api_urls")),
 ]
 
 if settings.DEBUG:
