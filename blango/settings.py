@@ -58,6 +58,7 @@ class Dev(Configuration):
         'crispy_bootstrap5',
         'debug_toolbar',
         'django_registration',
+        'rest_framework',
     ]
 
     MIDDLEWARE = [
