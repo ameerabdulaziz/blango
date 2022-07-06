@@ -36,7 +36,7 @@ urlpatterns = [
     path("ip/", blog.views.get_ip),
     path('admin/', admin.site.urls),
 
-    path("api/v1/", include("blog.api_urls")),
+    path("api/v1/", include("blog.api.urls")),
 ]
 
 if settings.DEBUG:
