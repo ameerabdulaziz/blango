@@ -59,6 +59,7 @@ class Dev(Configuration):
         'debug_toolbar',
         'django_registration',
         'rest_framework',
+        'rest_framework.authtoken',
     ]
 
     MIDDLEWARE = [
@@ -228,6 +229,16 @@ class Dev(Configuration):
     # SESSION_COOKIE_SECURE = True
     # CSRF_COOKIE_SAMESITE = 'None'
     # SESSION_COOKIE_SAMESITE = 'None'
+
+
+    # REST Framework Settings
+    REST_FRAMEWORK = {
+        "DEFAULT_AUTHENTICATION_CLASSES": [
+            "rest_framework.authentication.BasicAuthentication",
+            "rest_framework.authentication.SessionAuthentication",
+            "rest_framework.authentication.TokenAuthentication",
+        ]
+    }
 
 
 class Prod(Dev):
