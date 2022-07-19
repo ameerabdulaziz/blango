@@ -3,7 +3,7 @@ from rest_framework.authentication import SessionAuthentication
 
 from blango_auth.models import User
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
-from blog.api.serializers import PostSerializer, UserSerializer
+from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer
 from blog.models import Post
 
 
@@ -15,7 +15,7 @@ class PostList(generics.ListCreateAPIView):
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostDetailSerializer
     permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
 
 
