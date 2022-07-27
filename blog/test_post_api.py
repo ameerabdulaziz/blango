@@ -78,8 +78,6 @@ class PostApiTestCase(TestCase):
             "published_at": "2021-01-10T09:00:00Z",
         }
         response = self.client.post(self.path, post_dict)
-        print(response)
-        print(response.json())
         post = response.json()
         self.assertEqual(response.status_code, 201)
         self.assertEqual(Post.objects.count(), 3)
