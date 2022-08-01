@@ -9,3 +9,4 @@ django-debug-toolbar==3.2.2
 django-registration==3.2
 psycopg2>=2.8
 djangorestframework
+drf-yasg
