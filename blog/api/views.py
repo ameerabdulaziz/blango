@@ -1,3 +1,8 @@
+from datetime import timedelta
+
+from django.db.models import Q
+from django.http import Http404
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers
@@ -16,6 +21,26 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            if not user.is_staff:
+                self.queryset = self.queryset.filter(Q(published_at__lt=timezone.now()) | Q(author=user))
+        else:
+            self.queryset = self.queryset.filter(published_at__lt=timezone.now())
+        period_time = self.kwargs.get('period_time')
+        if not period_time:
+            return self.queryset
+        else:
+            if period_time == 'new':
+                return self.queryset.filter(published_at__gt=timezone.now() - timedelta(hours=1))
+            elif period_time == 'day':
+                return self.queryset.filter(published_at__gt=timezone.now() - timedelta(days=1))
+            elif period_time == 'week':
+                return self.queryset.filter(published_at__gt=timezone.now() - timedelta(weeks=1))
+            else:
+                raise Http404(f"Time period {period_time} is not valid, should be 'new', 'today' or 'week'")
+
     def get_serializer_class(self):
         if self.action in ('list', 'create'):
             return PostSerializer
@@ -23,6 +48,7 @@ class PostViewSet(viewsets.ModelViewSet):
             return PostDetailSerializer
 
     @method_decorator(cache_page(120))
+    @method_decorator(vary_on_headers('Authorization', 'Cookie'))
     def list(self, *args, **kwargs):
         return super(PostViewSet, self).list(*args, **kwargs)
     
