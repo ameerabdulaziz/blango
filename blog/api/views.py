@@ -12,6 +12,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 from blango_auth.models import User
+from blog.api.filters import PostFilterSet
 from blog.api.permissions import AuthorModifyOrReadOnly, IsAdminUserForObject
 from blog.api.serializers import PostSerializer, UserSerializer, PostDetailSerializer, TagSerializer
 from blog.models import Post, Tag
@@ -20,6 +21,8 @@ from blog.models import Post, Tag
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     permission_classes = [AuthorModifyOrReadOnly | IsAdminUserForObject]
+    filterset_class = PostFilterSet
+    ordering_fields = ['published_at', 'author', 'title', 'slug']
 
     def get_queryset(self):
         user = self.request.user
@@ -59,6 +62,10 @@ class PostViewSet(viewsets.ModelViewSet):
         if request.user.is_anonymous:
             raise PermissionDenied("You must be logged in to see which Posts are yours")
         posts = Post.objects.filter(author=request.user)
+        page = self.paginate_queryset(posts)
+        if page is not None:
+            serializer = PostSerializer(page, many=True, context={'request': request})
+            return self.get_paginated_response(serializer.data)
         serializer = PostSerializer(posts, many=True, context={'request': request})
         return Response(serializer.data)
 

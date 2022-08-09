@@ -42,7 +42,7 @@ class PostApiTestCase(TestCase):
 
     def test_post_list(self):
         response = self.client.get(self.path)
-        posts_data = response.json()
+        posts_data = response.json()['results']
 
         self.assertEqual(len(posts_data), 2)
         for post in posts_data:

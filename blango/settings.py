@@ -57,6 +57,7 @@ class Dev(Configuration):
         'crispy_forms',
         'crispy_bootstrap5',
         'debug_toolbar',
+        'django_filters',
         'django_registration',
         'drf_yasg',
         'rest_framework',
@@ -253,7 +254,13 @@ class Dev(Configuration):
             "anon_burst": "10/minute",
             "user_sustained": "5000/day",
             "user_burst": "100/minute",
-        }
+        },
+        'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+        'PAGE_SIZE': 3,
+        'DEFAULT_FILTER_BACKENDS': [
+            'django_filters.rest_framework.DjangoFilterBackend',
+            'rest_framework.filters.OrderingFilter',
+        ],
     }
 
     SWAGGER_SETTINGS = {
