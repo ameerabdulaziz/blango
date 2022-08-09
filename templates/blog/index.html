@@ -7,6 +7,9 @@
     {% row %}
         {% col %}
             <h3>{{ post.title }}</h3>
+            {% if post.hero_image %}
+                <img src="{{ post.hero_image.thumbnail.100x100.url }}" alt="{{ post.title }}">
+            {% endif %}
             {% include "blog/post-byline.html" %}
             {% row 'border-bottom' %}
                 <p>{{ post.summary }}</p>

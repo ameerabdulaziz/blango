@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
+from versatileimagefield.fields import VersatileImageField, PPOIField
 
 class Comment(models.Model):
   creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -34,7 +34,9 @@ class Post(models.Model):
     content = models.TextField()
     tags = models.ManyToManyField(Tag, related_name="posts")
     comments = GenericRelation(Comment, related_query_name='post')
-    
+    hero_image = VersatileImageField(upload_to='hero_images', ppoi_field='ppoi', null=True, blank=True)
+    ppoi = PPOIField(null=True, blank=True)
+
     def __str__(self):
         return self.title
 
