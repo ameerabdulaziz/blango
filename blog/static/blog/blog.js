@@ -2,27 +2,52 @@
 /*jshint -W033 */
 /*jshint -W117 */
 
-for(let i = 0; i<10; i+=1) {
-    console.log(`for loop i: ${i}`)
+class Greeter {
+    constructor(name) {
+        this.name = name
+    }
+
+    getGreeting() {
+        if (this.name === undefined) {
+            return 'Hello, no name!'
+        } else {
+            return `Hello, ${this.name}`
+        }
+    }
+
+    showGreeting(greetingMessage) {
+        console.log(greetingMessage)
+    }
+
+    greet() {
+        this.showGreeting(this.getGreeting())
+    }
 }
 
-let j = 0
-while(j < 10) {
-    console.log(`while loop j: ${j}`)
-    j += 1
+
+class DelayedGreeter extends Greeter {
+    delay = 2000
+
+    constructor(name, delay) {
+        super(name)
+        if (delay !== undefined) {
+            this.delay = delay
+        }
+    }
+
+    greet() {
+        setTimeout(() => {
+            this.showGreeting(this.getGreeting())
+        }, this.delay)
+    }
 }
 
-let k = 10
-do {
-    console.log(`do while k: ${k}`)
-} while(k < 10)
+const g = new Greeter()
 
-const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+g.greet()
 
-numbers.forEach((value => {
-    console.log(`For each value ${value}`)
-}))
+const dg1 = new DelayedGreeter('Ameer Abdulaziz')
+const dg2 = new DelayedGreeter('Akram Abdulaziz', 3000)
 
-const doubled = numbers.map(x => x * 2)
-console.log('Here are the doubled numbers')
-console.log(doubled)
+dg1.greet()
+dg2.greet()
