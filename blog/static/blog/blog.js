@@ -2,52 +2,53 @@
 /*jshint -W033 */
 /*jshint -W117 */
 
-class Greeter {
-    constructor(name) {
-        this.name = name
-    }
+function resolvedCallback(data) {
+    console.log(`resolved with data ${data}`)
+}
 
-    getGreeting() {
-        if (this.name === undefined) {
-            return 'Hello, no name!'
+function rejectedCallback(message) {
+    console.log(`rejected with message ${message}`)
+}
+
+const lazyAdd = (a, b) => {
+    const doAdd = (resolve, reject) => {
+        if (typeof a !== 'number' || typeof b !== 'number') {
+            reject('a and b must be numbers')
         } else {
-            return `Hello, ${this.name}`
+            const sum = a + b
+            resolve(sum)
         }
     }
-
-    showGreeting(greetingMessage) {
-        console.log(greetingMessage)
-    }
-
-    greet() {
-        this.showGreeting(this.getGreeting())
-    }
+    return new Promise(doAdd)
 }
 
+const p = lazyAdd(5, 3)
+p.then(resolvedCallback, rejectedCallback)
 
-class DelayedGreeter extends Greeter {
-    delay = 2000
+lazyAdd("nan", "alsonan").then(resolvedCallback, rejectedCallback)
 
-    constructor(name, delay) {
-        super(name)
-        if (delay !== undefined) {
-            this.delay = delay
-        }
-    }
-
-    greet() {
-        setTimeout(() => {
-            this.showGreeting(this.getGreeting())
-        }, this.delay)
-    }
-}
-
-const g = new Greeter()
-
-g.greet()
-
-const dg1 = new DelayedGreeter('Ameer Abdulaziz')
-const dg2 = new DelayedGreeter('Akram Abdulaziz', 3000)
-
-dg1.greet()
-dg2.greet()
+// function resolvedCallback(data) {
+//   console.log('Resolved with data ' +  data)
+// }
+//
+// function rejectedCallback(message) {
+//   console.log('Rejected with message ' + message)
+// }
+//
+// const lazyAdd = (a, b) => {
+//   const doAdd = (resolve, reject) => {
+//     if (typeof a !== "number" || typeof b !== "number") {
+//       reject("a and b must both be numbers")
+//     } else {
+//       const sum = a + b
+//       resolve(sum)
+//     }
+//   }
+//
+//   return new Promise(doAdd)
+// }
+//
+// const p = lazyAdd(3, 4)
+// p.then(resolvedCallback, rejectedCallback)
+//
+// lazyAdd("nan", "alsonan").then(resolvedCallback, rejectedCallback)
